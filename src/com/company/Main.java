@@ -62,16 +62,6 @@ public class Main {
         }
         return list;
     }
-    public static LinkedList<Integer> generationLinked(int maxValue, int size ){
-        Random rd = new Random();
-        LinkedList<Integer> myList = new LinkedList<Integer>(Collections.singleton(size));
-        for(int i = 0; i < size;i++){
-            myList.add(rd.nextInt(maxValue));
-        }
-        return myList;
-    }
-
-
     public static LinkedList<Integer>  mergeSort(LinkedList<Integer> sequence) {
         LinkedList<Integer> listLeft = new LinkedList<>();
         LinkedList<Integer> listRight = new LinkedList<>();
