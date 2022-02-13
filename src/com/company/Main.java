@@ -16,11 +16,23 @@ public class Main {
         System.out.println(sequence);
         System.out.println(mergeSort(sequence));
 
-         */
-        ArrayList<Integer> sequence = sequenceGenerated(10);
+        //ArrayList<Integer> sequence = sequenceGenerated(10);
+        ArrayList<Integer> sequence = new ArrayList<>();
+        sequence.add(12);
+        sequence.add(11);
+        sequence.add(13);
+        sequence.add(5);
+        sequence.add(6);
+        sequence.add(7);
         System.out.println(sequence);
         //System.out.println(quickSort(sequence));
         System.out.println(heapSort(sequence));
+
+         */
+        LinkedList<Integer> sequence = linkedListGenerated(10);
+        System.out.println(sequence);
+        System.out.println(mergeSort(sequence));
+
 
     }
     public static void permuter(ArrayList<Integer> myList, int num1,int num2){
@@ -59,32 +71,58 @@ public class Main {
         return list;
     }
     public static LinkedList<Integer>  mergeSort(LinkedList<Integer> sequence) {
+        int n = sequence.size();
+
         LinkedList<Integer> listLeft = new LinkedList<>();
         LinkedList<Integer> listRight = new LinkedList<>();
-        LinkedList<Integer> listMerge;
-        if (sequence.size() > 1) {
+        if (n > 1) {
             // division en 2 sous listes
-            int middle = sequence.size() / 2;
+            int mid = n / 2;
 
             // sous liste de gauche
-            for (int i = 0; i < middle; i++) {
+            for (int i = 0; i < mid; i++) {
                 listLeft.add(sequence.get(i));
             }
 
             // sous liste de droite
-            for (int j = middle; j < sequence.size(); j++) {
+            for (int j = mid; j < n; j++) {
                 listRight.add(sequence.get(j));
             }
-            listLeft = mergeSort(listLeft);
-            listRight = mergeSort(listRight);
+            mergeSort(listLeft);
+            mergeSort(listRight);
 
-            listMerge = merge(listLeft, listRight);
+            merge(sequence,listLeft, listRight,mid,n-mid);
         } else {
             return sequence;
         }
-        return listMerge;
+        return sequence;
+
     }
-    public static LinkedList<Integer> merge(LinkedList<Integer> listLeft, LinkedList<Integer> listRight) {
+    public static void merge(LinkedList<Integer> sequence,LinkedList<Integer> listLeft,LinkedList<Integer> listRight, int left, int right) {
+        int i = 0, j = 0, k = 0;
+        while(i < left && j < right){
+            if (listLeft.get(i) <= listRight.get(j)){
+                sequence.set(k,listLeft.get(i));
+                k++;
+                i++;
+            }
+            else {
+                sequence.set(k,listRight.get(j));
+                k++;
+                j++;
+            }
+        }
+        while (i < left){
+            sequence.set(k,listLeft.get(i));
+            k++;
+            i++;
+        }
+        while (j < right){
+            sequence.set(k, listRight.get(j));
+            k++;
+            j++;
+        }
+        /*
         LinkedList<Integer> list = new LinkedList<>();
         ListIterator<Integer> it1 = listLeft.listIterator(), it2 = listRight.listIterator();
         int n1 = it1.hasNext() ? it1.next() : 0, n2 = it2.hasNext() ? it2.next() : 0;
@@ -100,6 +138,8 @@ public class Main {
             }
         }
         return list;
+
+         */
     }
     public static ArrayList<Integer> quickSortPartition(ArrayList<Integer> sequence, int first, int last){
         if (first < last){
@@ -127,7 +167,7 @@ public class Main {
         return quickSortPartition(sequence,0,sequence.size()-1);
     }
 
-    public static ArrayList<Integer> tamiser(ArrayList<Integer> sequence, int node ,int n){
+    public static ArrayList<Integer> heapify(ArrayList<Integer> sequence, int node ,int n){
         // n is size of heap
         int largest = node; // Initialize largest as root
         int left = 2*node + 1;
@@ -141,18 +181,18 @@ public class Main {
         }
         if (largest != node){
             permuter(sequence,node,largest);
-            tamiser(sequence,n,largest);
+            heapify(sequence,n,largest);
         }
         return sequence;
     }
     public static ArrayList<Integer> heapSort(ArrayList<Integer> sequence){
         int n = sequence.size();
         for (int i = n/2 -1; i >= 0; i--){
-            tamiser(sequence,n,i);
+            heapify(sequence,n,i);
         }
         for (int i = n-1;i >= 0 ; i--){
             permuter(sequence,0,i);
-            tamiser(sequence,i,0);
+            heapify(sequence,i,0);
         }
         return sequence;
     }
