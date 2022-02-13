@@ -15,23 +15,12 @@ public class Main {
         LinkedList<Integer> sequence = linkedListGenerated(10);
         System.out.println(sequence);
         System.out.println(mergeSort(sequence));
-
-        //ArrayList<Integer> sequence = sequenceGenerated(10);
-        ArrayList<Integer> sequence = new ArrayList<>();
-        sequence.add(12);
-        sequence.add(11);
-        sequence.add(13);
-        sequence.add(5);
-        sequence.add(6);
-        sequence.add(7);
+         */
+        ArrayList<Integer> sequence = sequenceGenerated(10);
         System.out.println(sequence);
         //System.out.println(quickSort(sequence));
         System.out.println(heapSort(sequence));
 
-         */
-        LinkedList<Integer> sequence = linkedListGenerated(10);
-        System.out.println(sequence);
-        System.out.println(mergeSort(sequence));
 
 
     }
@@ -83,7 +72,6 @@ public class Main {
             for (int i = 0; i < mid; i++) {
                 listLeft.add(sequence.get(i));
             }
-
             // sous liste de droite
             for (int j = mid; j < n; j++) {
                 listRight.add(sequence.get(j));
@@ -122,24 +110,6 @@ public class Main {
             k++;
             j++;
         }
-        /*
-        LinkedList<Integer> list = new LinkedList<>();
-        ListIterator<Integer> it1 = listLeft.listIterator(), it2 = listRight.listIterator();
-        int n1 = it1.hasNext() ? it1.next() : 0, n2 = it2.hasNext() ? it2.next() : 0;
-        for (int i = 0, i1 = 0, i2 = 0, sz1 = listLeft.size(), sz2 = listRight.size(), sz = sz1 + sz2; i < sz; i++) {
-            if (i1 < sz1 && (i2 == sz2 || n1 < n2)) {
-                list.add(n1);
-                i1++;
-                n1 = it1.hasNext() ? it1.next() : 0;
-            } else {
-                list.add(n2);
-                i2++;
-                n2 = it2.hasNext() ? it2.next() : 0;
-            }
-        }
-        return list;
-
-         */
     }
     public static ArrayList<Integer> quickSortPartition(ArrayList<Integer> sequence, int first, int last){
         if (first < last){
@@ -167,7 +137,7 @@ public class Main {
         return quickSortPartition(sequence,0,sequence.size()-1);
     }
 
-    public static ArrayList<Integer> heapify(ArrayList<Integer> sequence, int node ,int n){
+    public static void heapify(ArrayList<Integer> sequence, int n ,int node){
         // n is size of heap
         int largest = node; // Initialize largest as root
         int left = 2*node + 1;
@@ -183,7 +153,6 @@ public class Main {
             permuter(sequence,node,largest);
             heapify(sequence,n,largest);
         }
-        return sequence;
     }
     public static ArrayList<Integer> heapSort(ArrayList<Integer> sequence){
         int n = sequence.size();
