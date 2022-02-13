@@ -11,10 +11,16 @@ public class Main {
         System.out.println(myList);
         bubbleSort(myList);
         System.out.println(myList);
-         */
+
         LinkedList<Integer> sequence = linkedListGenerated(10);
         System.out.println(sequence);
         System.out.println(mergeSort(sequence));
+
+         */
+        ArrayList<Integer> sequence = sequenceGenerated(10);
+        System.out.println(sequence);
+        //System.out.println(quickSort(sequence));
+        System.out.println(heapSort(sequence));
 
     }
     public static void permuter(ArrayList<Integer> myList, int num1,int num2){
@@ -32,16 +38,6 @@ public class Main {
             }
         }
     }
-    /*
-    public static ArrayList<Integer> generation(int maxValue, int size ){
-        Random rd = new Random();
-        ArrayList<Integer> myList = new ArrayList<Integer>(size);
-        for(int i = 0; i < size;i++){
-            myList.add(rd.nextInt(maxValue));
-        }
-        return myList;
-    }
-     */
     public static ArrayList<Integer> sequenceGenerated(int n){
         Random rd = new Random();
         ArrayList<Integer> suite = new ArrayList<>();
@@ -79,11 +75,9 @@ public class Main {
             for (int j = middle; j < sequence.size(); j++) {
                 listRight.add(sequence.get(j));
             }
-            System.out.println(listLeft);
-            System.out.println(listRight);
-            //listMerge = merge(listLeft, listRight);
             listLeft = mergeSort(listLeft);
             listRight = mergeSort(listRight);
+
             listMerge = merge(listLeft, listRight);
         } else {
             return sequence;
@@ -91,26 +85,76 @@ public class Main {
         return listMerge;
     }
     public static LinkedList<Integer> merge(LinkedList<Integer> listLeft, LinkedList<Integer> listRight) {
-        // index des listes
-        int l = 0, r = 0;
-        while (l < listLeft.size() && r < listRight.size()) {
-            if (listLeft.get(l) < listRight.get(r) || listLeft.get(l) == listRight.get(r)) {
-                listLeft.add(l, listLeft.get(l));
-                if ((r + 1) > listRight.size()) {
-                    break;
-                }
-                r = r + 1;
-                l = 0;
+        LinkedList<Integer> list = new LinkedList<>();
+        ListIterator<Integer> it1 = listLeft.listIterator(), it2 = listRight.listIterator();
+        int n1 = it1.hasNext() ? it1.next() : 0, n2 = it2.hasNext() ? it2.next() : 0;
+        for (int i = 0, i1 = 0, i2 = 0, sz1 = listLeft.size(), sz2 = listRight.size(), sz = sz1 + sz2; i < sz; i++) {
+            if (i1 < sz1 && (i2 == sz2 || n1 < n2)) {
+                list.add(n1);
+                i1++;
+                n1 = it1.hasNext() ? it1.next() : 0;
             } else {
-                if ((l + 1) == listRight.size()) {
-                    listLeft.add(listRight.get(r));
-                }
-                r = r;
-                l = l + 1;
+                list.add(n2);
+                i2++;
+                n2 = it2.hasNext() ? it2.next() : 0;
             }
-            return listLeft;
         }
-        return listLeft;
+        return list;
+    }
+    public static ArrayList<Integer> quickSortPartition(ArrayList<Integer> sequence, int first, int last){
+        if (first < last){
+            int left = first, right = last;
+            int pivot = sequence.get((left+right)/2);
+            while (left <= right){
+                while (sequence.get(left) < pivot){
+                    left++;
+                }
+                while (sequence.get(right) > pivot){
+                    right--;
+                }
+                if (left <= right){
+                    permuter(sequence,left,right);
+                    left++;
+                    right--;
+                }
+            }
+            quickSortPartition(sequence,first,right);
+            quickSortPartition(sequence,left,last);
+        }
+        return sequence;
+    }
+    public static ArrayList<Integer> quickSort(ArrayList<Integer> sequence){
+        return quickSortPartition(sequence,0,sequence.size()-1);
+    }
+
+    public static ArrayList<Integer> tamiser(ArrayList<Integer> sequence, int node ,int n){
+        // n is size of heap
+        int largest = node; // Initialize largest as root
+        int left = 2*node + 1;
+        int right = 2*node + 2;
+
+        if (left < n && sequence.get(left) > sequence.get(largest)){
+            largest = left;
+        }
+        if (right < n && sequence.get(right) > sequence.get(largest)){
+            largest = right;
+        }
+        if (largest != node){
+            permuter(sequence,node,largest);
+            tamiser(sequence,n,largest);
+        }
+        return sequence;
+    }
+    public static ArrayList<Integer> heapSort(ArrayList<Integer> sequence){
+        int n = sequence.size();
+        for (int i = n/2 -1; i >= 0; i--){
+            tamiser(sequence,n,i);
+        }
+        for (int i = n-1;i >= 0 ; i--){
+            permuter(sequence,0,i);
+            tamiser(sequence,i,0);
+        }
+        return sequence;
     }
 
 }
